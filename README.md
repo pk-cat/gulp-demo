@@ -1,153 +1,85 @@
-# pages-boilerplate
+# gulp-demo
 
-[![Build Status][travis-image]][travis-url]
-[![Package Version][version-image]][version-url]
-[![License][license-image]][license-url]
-[![Dependency Status][dependency-image]][dependency-url]
-[![devDependency Status][devdependency-image]][devdependency-url]
-[![Code Style][style-image]][style-url]
+使用封装好的 gulp 包作为依赖，来打包本地静态资源
 
-> Always a pleasure scaffolding your awesome static sites.
+## Write process
 
-## Getting Started
+### gulp-file-common
 
-```shell
-# clone repo
-$ git clone https://github.com/zce/pages-boilerplate.git my-awesome-pages
-$ cd my-awesome-pages
-# install dependencies
-$ yarn # or npm install
-```
+发布在 npm 官网里的[gulp-file-common](https://www.npmjs.com/package/gulp-file-common)
 
-## Usage
+1. lib 目录下放的就是 gulp 的配置文件 gulpfile.js，里面导出了三个方法，可以作为命令来用，包括
+   clean、build 和 start。
+   1.1 clean 用来清除临时打包和打包文件夹
+   1.2 build 是将所有静态资源打包（打包后的目录结构和原来的一样）
+   1.3 start 是开启一个 web 服务，打开一个端口显示页面
 
-```shell
-$ yarn <task> [options]
-```
+2. bin 目录下放的是 cli 脚本文件，主要包括了引入 gulp-cli 脚本，以及其他 gulp 参数
+   2.1 --cwd 指定运行目录
+   2.2 --gulpfile 指定 gulp 配置文件的目录
 
-### e.g.
+## Script setup
+
+打开项目后，下载对应依赖，主要是 gulp-file-common
 
 ```shell
-# Runs the app in development mode
-$ yarn serve --port 5210 --open
-# Builds the app for production to the `dist` folder
-$ yarn build --production
+npm install
 ```
 
-### Available Scripts
+本地需配置 pages.config.js 文件（和 package.json 同级）
+文件内容主要是静态资源以及打包文件的路径
+如:
 
-#### `yarn lint` or `npm run lint`
-
-Lint the styles & scripts files.
-
-#### `yarn compile` or `npm run compile`
-
-Compile the styles & scripts & pages file.
-
-#### `yarn serve` or `npm run serve`
-
-Runs the app in development mode with a automated server.
-
-##### options
-
-- `open`: Open browser on start, Default: `false`
-- `port`: Specify server port, Default: `2080`
-
-#### `yarn build` or `npm run build`
-
-Builds the app for production to the `dist` folder. It minify source in production mode for the best performance.
-
-##### options
-
-- `production`: Production mode flag, Default: `false`
-- `prod`: Alias to `production`
-
-#### `yarn start` or `npm run start`
-
-Running projects in production mode.
-
-##### options
-
-- `open`: Open browser on start, Default: `false`
-- `port`: Specify server port, Default: `2080`
-
-#### `yarn deploy` or `npm run deploy`
-
-Deploy the `dist` folder to [GitHub Pages](https://pages.github.com).
-
-##### options
-
-- `branch`: The name of the branch you'll be pushing to, Default: `'gh-pages'`
-
-#### `yarn clean` or `npm run clean`
-
-Clean the `dist` & `temp` files.
-
-## Folder Structure
-
-```
-└── my-awesome-pages ································· project root
-   ├─ public ········································· static folder
-   │  └─ favicon.ico ································· static file (unprocessed)
-   ├─ src ············································ source folder
-   │  ├─ assets ······································ assets folder
-   │  │  ├─ fonts ···································· fonts folder
-   │  │  │  └─ pages.ttf ····························· font file (imagemin)
-   │  │  ├─ images ··································· images folder
-   │  │  │  └─ logo.png ······························ image file (imagemin)
-   │  │  ├─ scripts ·································· scripts folder
-   │  │  │  └─ main.js ······························· script file (babel / uglify)
-   │  │  └─ styles ··································· styles folder
-   │  │     ├─ _variables.scss ······················· partial sass file (dont output)
-   │  │     └─ main.scss ····························· entry scss file (scss / postcss)
-   │  ├─ layouts ····································· layouts folder
-   │  │  └─ basic.html ······························· layout file (dont output)
-   │  ├─ partials ···································· partials folder
-   │  │  └─ header.html ······························ partial file (dont output)
-   │  ├─ about.html ·································· page file (use layout & partials)
-   │  └─ index.html ·································· page file (use layout & partials)
-   ├─ .csscomb.json ·································· csscomb config file
-   ├─ .editorconfig ·································· editor config file
-   ├─ .gitignore ····································· git ignore file
-   ├─ .travis.yml ···································· travis ci config file
-   ├─ CHANGELOG.md ··································· repo changelog
-   ├─ LICENSE ········································ repo license
-   ├─ README.md ······································ repo readme
-   ├─ gulpfile.js ···································· gulp tasks file
-   ├─ package.json ··································· package file
-   └─ yarn.lock ······································ yarn lock file
+```js
+module.exports = {
+  // 路径
+  build: {
+    src: "src", //资源目录（需要编译压缩的）
+    dist: "release", //打包好的文件夹
+    temp: ".tmp", //临时打包文件夹
+    public: "public", //静态资源（不需要编译压缩）
+    paths: {
+      styles: "assets/styles/*.scss", //样式文件（用的是scss)
+      scripts: "assets/scripts/*.js", //js文件
+      pages: "**/*.html", //html文件
+      images: "assets/images/**", //图片文件
+      fonts: "assets/fonts/**", //字体文件
+    },
+  },
+};
 ```
 
-## Related
+## Use
 
-- [zce/x-pages](https://github.com/zce/x-pages) - A fully managed gulp workflow for static page sites.
+### clean
 
-## Contributing
+```shell
+npm run clean
+```
 
-1. **Fork** it on GitHub!
-2. **Clone** the fork to your own machine.
-3. **Checkout** your feature branch: `git checkout -b my-awesome-feature`
-4. **Commit** your changes to your own branch: `git commit -am 'Add some feature'`
-5. **Push** your work back up to your fork: `git push -u origin my-awesome-feature`
-6. Submit a **Pull Request** so that we can review your changes.
+清除临时的和最终打包好的文件夹, 默认是.tmp 和 release,
 
-> **NOTE**: Be sure to merge the latest from "upstream" before making a pull request!
+### build
 
-## License
+```shell
+npm run build
+```
 
-[MIT](LICENSE) &copy; [汪磊](https://zce.me)
+编译并压缩所有静态资源（包括 src 和 public 目录下的所有资源）并放入打包文件夹, 默认是.tmp 和 release.
 
+### start
 
+```shell
+npm run start
+```
 
-[travis-image]: https://img.shields.io/travis/zce/pages-boilerplate/master.svg
-[travis-url]: https://travis-ci.org/zce/pages-boilerplate
-[version-image]: https://img.shields.io/github/package-json/v/zce/pages-boilerplate/master.svg
-[version-url]: https://github.com/zce/pages-boilerplate
-[license-image]: https://img.shields.io/github/license/zce/pages-boilerplate.svg
-[license-url]: https://github.com/zce/pages-boilerplate/blob/master/LICENSE
-[dependency-image]: https://img.shields.io/david/zce/pages-boilerplate.svg
-[dependency-url]: https://david-dm.org/zce/pages-boilerplate
-[devdependency-image]: https://img.shields.io/david/dev/zce/pages-boilerplate.svg
-[devdependency-url]: https://david-dm.org/zce/pages-boilerplate?type=dev
-[style-image]: https://img.shields.io/badge/code_style-standard-brightgreen.svg
-[style-url]: http://standardjs.com
+编译并压缩静态资源（包括 src 目录下的所有资源）并放入临时打包文件夹, 默认是.tmp, 然后启动一个 web 服务，
+打开端口为 3002 的网页显示项目
+
+### lint
+
+```shell
+npm run lint
+```
+
+使用 eslint 检索代码格式，并输出不符合配置的文件，配置文件为.eslintrc.json(和 package.json 同级)
