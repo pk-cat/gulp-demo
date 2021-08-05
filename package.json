@@ -25,11 +25,9 @@
   },
   "scripts": {
     "clean": "gulp clean",
-    "link": "npm link 'zce-pages'",
-    "serve": "gulp serve",
+    "lint": "",
     "build": "gulp build",
-    "start": "gulp start",
-    "deploy": "gulp deploy --production"
+    "start": "gulp start"
   },
   "browserslist": [
     "last 1 version",
