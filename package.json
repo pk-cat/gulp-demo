@@ -24,10 +24,10 @@
     "url": "https://zce.me"
   },
   "scripts": {
-    "clean": "gulp clean",
+    "clean": "gulp-file-common clean",
     "lint": "eslint -c .eslintrc.json .",
-    "build": "gulp build",
-    "start": "gulp start"
+    "build": "gulp-file-common build",
+    "start": "gulp-file-common start"
   },
   "browserslist": [
     "last 1 version",
@@ -37,13 +37,12 @@
   ],
   "dependencies": {
     "bootstrap": "4.4.1",
+    "gulp-file-common": "^0.1.1",
     "jquery": "3.4.1",
     "popper.js": "1.16.1"
   },
   "devDependencies": {
-    "eslint": "^7.32.0",
-    "gulp": "^4.0.2",
-    "gulp-cli": "^2.3.0"
+    "eslint": "^7.32.0"
   },
   "engines": {
     "node": ">=6"
