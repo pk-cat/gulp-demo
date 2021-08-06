@@ -1,8 +1,8 @@
-# gulp-demo
+# description
 
 使用封装好的 gulp 包作为依赖，来打包本地静态资源
 
-## Write process
+## package
 
 ### gulp-file-common
 
@@ -20,14 +20,21 @@
 
 ## Script setup
 
-打开项目后，下载对应依赖，主要是 gulp-file-common
+### 打开项目后，下载对应依赖
 
 ```shell
 npm install
+
+npm install eslint -D
 ```
 
-本地需配置 pages.config.js 文件（和 package.json 同级）
-文件内容主要是静态资源以及打包文件的路径
+默认镜像是npm，可修改本地.npmrc（和package.json同级）来修改源
+
+### 本地需配置
+
+#### pages.config.js 文件
+
+（和 package.json 同级）文件内容主要是静态资源以及打包文件的路径
 如:
 
 ```js
@@ -49,6 +56,42 @@ module.exports = {
 };
 ```
 
+#### .eslintrc.json 文件
+
+（和 package.json 同级）文件内容主要是[eslint](https://eslint.org/)的配置
+如:
+
+```json
+{
+  "parserOptions": {
+    "ecmaVersion": 2020,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true
+    }
+  },
+  "env": {
+    "browser": true
+  },
+  "rules": {
+    "no-console": 1
+  },
+  "extends": ["eslint:recommended"]
+}
+```
+
+### 修改 npm scripts
+
+使用 gulp-file-common 作为 cli 命令(修改原来的 clean 和 build 以及 start)
+
+```json
+  "scripts": {
+    "clean": "gulp-file-common clean",
+    "build": "gulp-file-common build",
+    "start": "gulp-file-common start"
+  },
+```
+
 ## Use
 
 ### clean
@@ -66,6 +109,7 @@ npm run build
 ```
 
 编译并压缩所有静态资源（包括 src 和 public 目录下的所有资源）并放入打包文件夹, 默认是.tmp 和 release.
+（在.gitignore中添加了这两个目录）
 
 ### start
 
